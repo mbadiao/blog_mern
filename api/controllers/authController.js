@@ -16,7 +16,6 @@ const login = asyncHandler(async (req, res) => {
       .cookie("token", token, {
         httpOnly: true, // Accessible only by the web server
         secure: process.env.NODE_ENV === 'production', // HTTPS in production
-        sameSite: 'Strict', // CSRF protection
         maxAge: 3600000 // Cookie expiration time in milliseconds (1 hour)
       })
       .json({ data: { user }, message: "Login successful" });
@@ -48,7 +47,6 @@ const register = asyncHandler(async (req, res) => {
       .cookie("token", token, {
         httpOnly: true, // Accessible only by the web server
         secure: process.env.NODE_ENV === 'production', // HTTPS in production
-        sameSite: 'Strict', // CSRF protection
         maxAge: 3600000 // Cookie expiration time in milliseconds (1 hour)
       })
       .json({ data: { user }, message: "Register successful." });
