@@ -13,7 +13,12 @@ const login = asyncHandler(async (req, res) => {
     );
     return res
       .status(200)
-      .cookie("token", token)
+      .cookie("token", token, {
+        httpOnly: true, // Accessible only by the web server
+        secure: process.env.NODE_ENV === 'production', // HTTPS in production
+        sameSite: 'Strict', // CSRF protection
+        maxAge: 3600000 // Cookie expiration time in milliseconds (1 hour)
+      })
       .json({ data: { user }, message: "Login successful" });
   }
   return res.status(401).json({ message: "Invalid email or password" });
@@ -40,7 +45,12 @@ const register = asyncHandler(async (req, res) => {
     );
     res
       .status(201)
-      .cookie("token", token)
+      .cookie("token", token, {
+        httpOnly: true, // Accessible only by the web server
+        secure: process.env.NODE_ENV === 'production', // HTTPS in production
+        sameSite: 'Strict', // CSRF protection
+        maxAge: 3600000 // Cookie expiration time in milliseconds (1 hour)
+      })
       .json({ data: { user }, message: "Register successful." });
   } catch (error) {
     res.status(401).json({ message: "Error while trying to register." });
